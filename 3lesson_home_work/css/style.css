@@ -1,0 +1,20 @@
+input
+{
+    display: block;
+
+    width: 210px;
+}
+#list
+{
+    float: left;
+}
+.buttons
+{
+    float: left;
+
+    margin: 100px;
+}
+.green
+{
+    color: #f00;
+}
