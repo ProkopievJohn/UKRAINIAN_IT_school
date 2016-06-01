@@ -1,0 +1,72 @@
+<!--
+1.Перепишите все селекторы из первой папки 001_CSS_Selectors с помощью известных Вам методов и свойств.
+2.В примере с классом добавьте к существующем классу, класс с именем newclass, а также выведите в консоль все стили что есть у элемента с этим классом.
+3.В примере с индентификатором добавьте свойства marginTop с значением 10px и background с значением red.-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Fourth Homework fifth</title>
+</head>
+<style>
+	/*
+	a[target] {
+		background-color: yellow;
+	}
+	a[target='_blank'] { 
+		background-color: yellow;
+	}
+	a[target*='l'] { 
+		background-color: red;
+	}
+	a[target^='_t'] { 
+		background-color: greenyellow;
+	}
+	a[target$='f'] { 
+		background-color: darkcyan;
+	}
+	*/
+</style>
+<body>
+	<a href="#" target="_top">w3schools.com</a>
+	<a href="http://www.google.com" target="_blank">google.com</a>
+	<a href="http://www.wikipedia.org" target="_self">wikipedia.org</a>
+	<a href="#">Someting</a>
+
+	<script>
+	// 1. str.match( /JAVA(SCRIPT)/gi );
+		var body = document.querySelector('body'),
+				allElements = body.querySelectorAll('*'),
+				a = document.querySelectorAll('a');
+
+		for (var i = 0; i < a.length; i++) {
+			var at = a[i].getAttribute("target");
+			if (a[i].hasAttribute('target')) {
+				a[i].style.cssText += "background-color:yellow;";
+			}
+			if (at === "_blank") {
+				a[i].style.cssText += "background-color:yellow;";
+			}
+			if (typeof(at) == "string" && at.match(/l/i) !== null) {
+				a[i].style.cssText += "background-color:red;";
+			}
+			if (typeof(at) == "string" && at.match(/^\_t/i) !== null) {
+				a[i].style.cssText += "background-color:greenyellow;";
+			}
+			if (typeof(at) == "string" && at.match(/f$/i) !== null) {
+				a[i].style.cssText += "background-color:darkcyan;";
+				console.log('ok')
+			}
+		}
+	// 2.
+		// for (var i = 0; i < allElements.length; i++) {
+		// 	if (allElements[i].classList.contains("class1")) {
+		// 		allElements[i].classList.add('newclass');
+		// 	};
+		// };
+		// console.log(getComputedStyle(document.querySelector('.newclass')));
+	// 3.
+		// document.querySelector('.newclass').style.cssText += "margin-top:10px;background-color:red;";
+	</script>
+</body>
+</html>
