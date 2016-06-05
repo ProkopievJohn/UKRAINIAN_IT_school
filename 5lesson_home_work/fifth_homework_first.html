@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Fifth Homework first</title>
+</head>
+<body>
+<!-- Создайте счетчик, который начинает отчет с 1 и заканчивается на 30, также добавьте кнопки который останавливают отчет, и запускают его заново и добавьте кнопку обнуляющую отчет. Также попробуйте изменить код так чтобы отчет начинался с 30 и заканчивался на 1. -->
+	<div class="counter">1</div>
+	<button class="reset">Reset</button>
+	<button class="count">Counter</button>
+	<button class="stop">Stop</button>
+
+	<script>
+		var counter = document.querySelector('.counter'),
+				reset = document.querySelector('.reset'),
+				count = document.querySelector('.count'),
+				stop = document.querySelector('.stop'),
+				i = 1;
+
+		count.addEventListener('click', function myFun() {
+			startCounter = setTimeout(function() {
+				i++;
+				if (i == 31) {i = 1};
+				counter.innerHTML = i;
+				myFun();
+			}, 1000)
+		});
+
+		reset.addEventListener('click', function() {
+			clearTimeout(startCounter);
+			i=0;
+			counter.innerHTML = 0;
+		});
+
+		stop.addEventListener('click', function() {
+			clearTimeout(startCounter);
+		});
+
+	</script>
+</body>
+</html>
