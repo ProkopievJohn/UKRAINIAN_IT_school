@@ -1,0 +1,90 @@
+<!-- Доработайте пример, 005_thisExample.html, при наведении мыши к одному из блоков, цвет блока должен измениться, на уникальный, такой которого еще нету у существующих блоков. Также выведите в блок текстовое оповещение о информации цвета, который используется для фона данного блока. При попытке закрыть вкладку, придупредите пользователя о том что информация будет утеряна. Используйте window.onload.  -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Домашнее задание</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		div {
+			background-color:green;
+			display: inline-block;
+			height: 100px;
+			width: 100px;
+			margin: 10px;
+		}
+	</style>
+	<script>
+	window.onload = function () {
+		var divArr = document.querySelectorAll('div'),
+				color,
+				col;
+
+		function rgb2hex(rgb) {
+			var rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+			return "#" + parseInt(rgb[1]).toString(16) + parseInt(rgb[2]).toString(16) + parseInt(rgb[3]).toString(16);
+		}
+
+		function generateColor() {
+			var letters = '0123456789ABCDEF'.split(''); 
+			color = '#';
+			for (var i = 0; i < 6; i++ ) {
+				color += letters[Math.floor(Math.random() * 16)]; // Math.floor - округление в меньшую сторону
+			};
+			// var	m = Math.random();
+			// if (m < 0.2) {
+			// 	color = '#000'
+			// } else if (m < 0.4) {
+			// 	color = '#444444'
+			// } else if (m < 0.6) {
+			// 	color = '#999999'
+			// } else if (m < 0.8) {
+			// 	color = '#bbbbbb'
+			// } else if (m < 0.9) {
+			// 	color = '#cccccc'
+			// } else {
+			// 	color = '#ffffff'
+			// };
+			return color;
+		};
+			
+		function uniqueColor() {
+			generateColor();
+			for (var j = 0; j < divArr.length; j++) {
+				var divj = getComputedStyle(divArr[j]).backgroundColor;
+				col = rgb2hex(divj);
+				if (col == color) {
+					uniqueColor();
+				}
+			}
+			return color;
+		};
+
+		for (var i = 0; i < divArr.length; i++) {
+			divArr[i].onclick = function () {
+				this.style.backgroundColor = "red";
+			};
+			divArr[i].onmouseover = function (e) {
+				var generatedColor = uniqueColor();
+				this.style.backgroundColor = generatedColor;
+				this.innerHTML = rgb2hex(this.style.backgroundColor);
+			};
+		};
+	};
+	window.onbeforeunload = function () {
+		return "Вы уверены?";
+	}
+	</script>
+</head>
+<body>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+	<div></div>
+</script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!-- Напишите регулярные выражения, которые будут выбирать 
+	индекс - 55535 - 5 numbers
+	ip адресс, пример 255.255.255.255
+	цены в долларах - $0.84, $2.84, $4
+	дата в виде - 30/12/2014 - день, месяц, год
+ -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+ 	<meta charset="UTF-8">
+ 	<title>Sixth Homework first</title>
+ </head>
+ <body>
+ 	<script>
+		var pattern = /\d{5}/g;
+		var text = "jlksdjf55535sdfa9876543";
+		console.log(text.match(pattern));
+
+		var pattern = /\b(([01]?\d?\d|2[0-4]\d|25[0-5])\.){3}([01]?\d?\d|2[0-4]\d|25[0-5])\b/g;
+		var text = "255.255.255.255";
+		console.log(text.match(pattern));
+
+		var pattern = /\$\d/g;
+		var text = "$0.84, $2.84, $4";
+		console.log(text.match(pattern));
+
+		var pattern = /^\d{1,2}\/\d{1,2}\/\d{4}$/g;
+		var text = "30/12/2014";
+		console.log(text.match(pattern));
+ 	</script>
+ </body>
+ </html>
