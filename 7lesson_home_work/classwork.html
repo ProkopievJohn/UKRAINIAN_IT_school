@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+	div {
+		width: 200px;
+		height: 200px;
+		overflow: hidden;
+	}
+	li {
+		list-style: none;
+		width: 200px;
+		height: 200px;
+		float: left;
+	}
+</style>
+<body>
+	<div>
+		<ul>
+			<li>1.Lorem.</li>
+			<li>2.Nesciunt.</li>
+			<li>3.Doloremque.</li>
+			<li>4.Unde!</li>
+			<li>5.Sequi.</li>
+		</ul>
+	</div>
+	<button class='prev'>prev</button>
+	<button class='next'>next</button>
+	<button class='play'>play</button>
+	<button class='stop'>stop</button>
+	<button class='reset'>reset</button>
+	<script>
+		window.addEventListener('DOMContentLoaded', function(){
+			var div = document.querySelector('div'),
+					ul = document.querySelector('ul'),
+					widthLi = getComputedStyle(ul.firstElementChild).width,
+					prev = document.querySelector('.prev'),
+					next = document.querySelector('.next'),
+					play = document.querySelector('.play'),
+					stop = document.querySelector('.stop'),
+					reset = document.querySelector('.reset'),
+					maxWidthForUl = ul.children.length * parseInt(widthLi),
+					autoPlay,
+					flag = true;
+
+			// function maxWidthForUl() {
+			// 	return ul.children.length * parseInt(widthLi);
+			// }
+
+			function createStyle(prop, args, el){
+				el.style.cssText += prop + ":" + args + ";";
+			}
+
+			function moveNext() {
+				var translateX = getComputedTranslateX(ul) - parseInt(widthLi);
+				if (Math.abs(translateX) == maxWidthForUl) return;
+				createStyle('transform', 'translate(' + translateX + 'px)', ul);
+				return Math.abs(translateX);
+			}
+
+			function movePrev() {
+				var translateX = getComputedTranslateX(ul) + parseInt(widthLi);
+				if (getComputedTranslateX(ul) == 0) return;
+				createStyle('transform', 'translate(' + translateX + 'px)', ul);
+			}
+
+			function getComputedTranslateX(obj) {
+				if(!window.getComputedStyle) return;
+				var getTransform = getComputedStyle(ul).transform,
+						mat = getTransform.match(/^matrix3d\((.+)\)$/);
+				if (mat) return parseInt(mat[1].split(', ')[12]);
+						mat = getTransform.match(/^matrix\((.+)\)$/);
+				return mat ? parseInt(mat[1].split(', ')[4]) : 0;
+			}
+
+			function Owl() {
+				autoPlay = setTimeout(function() {
+					var translateX = getComputedTranslateX(ul);
+					if (translateX == 0) {
+						flag = true;
+					} else if (Math.abs(translateX) == (maxWidthForUl - parseInt(widthLi))) {
+						flag = false;
+					}
+					if (flag == true) moveNext();
+					if (flag == false) movePrev();
+					Owl();
+				}, 1500);
+			}
+
+			function stopOwl() {
+				clearTimeout(autoPlay);
+			}
+
+			function resetAutoOwl() {
+				flag = true;
+				clearTimeout(autoPlay);
+				createStyle('transform', 'translate(0px)', ul);
+			}
+
+			next.addEventListener('click', moveNext);
+			prev.addEventListener('click', movePrev);
+			play.addEventListener('click', Owl);
+			stop.addEventListener('click', stopOwl);
+			reset.addEventListener('click', resetAutoOwl);
+
+			createStyle('width', maxWidthForUl + 'px', ul);
+		})
+	</script>
+</body>
+</html>
