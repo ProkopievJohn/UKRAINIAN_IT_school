@@ -1,0 +1,62 @@
+<!--
+Создайте ссылку и див с текстом внутри, который изначально при загрузке страницы будет скрыт. При клике на ссылку див пропадает, если повторно нажать ссылку див и текст должны вернуться. Также создайте кнопку, которая будет отменять выполнение обработчика клика по ссылке.
+ -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>seventh homework first</title>
+	<style>
+		.div {
+			width: 100%;
+			float: left;
+		}
+		a {
+			display: block;
+			text-align: center;
+			line-height: 2rem;
+			width: 10rem;
+			background-color: #ccc;
+			float: left;
+			margin: 5px;
+			cursor: default;
+		}
+		a:hover {
+			background-color: #bbb;
+		}
+		a::after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+		.high {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+	<a class='show_high'>show high</a>
+	<a class='stop_show_high'>stop show high</a>
+	<div class="div high">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni mollitia nisi voluptas, corrupti possimus voluptatem ex est illum reiciendis. Optio vero nostrum incidunt, officia eveniet voluptate saepe quisquam, amet iure.</div>
+	<script>
+		window.addEventListener('DOMContentLoaded', function() {
+			var showHigh = document.querySelector('.show_high'),
+					stop = document.querySelector('.stop_show_high'),
+					div = document.querySelector('.div');
+
+			function showHighFunction(e) {
+				div.classList.toggle('high');
+				e.preventDefault();
+			}
+
+			function removeListenerThis(e) {
+				showHigh.removeEventListener('click', showHighFunction);
+				e.preventDefault();
+			}
+
+			showHigh.addEventListener('click', showHighFunction);
+			stop.addEventListener('click', removeListenerThis);
+		})
+	</script>
+</body>
+</html>

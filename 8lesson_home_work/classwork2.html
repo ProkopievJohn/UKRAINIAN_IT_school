@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>class work</title>
+	<style>
+		.result img {
+			width: 300px;
+			height: 300px;
+		}
+		.nav img {
+			display: block;
+			width: 50px;
+			height: 50px;
+			float: left;
+		}
+	</style>
+</head>
+<body>
+	<div class="result"><img src="" alt="" class="resultimg"></div>
+	<div class="nav">
+		<img src="#1" alt="">
+		<img src="#2" alt="">
+		<img src="#3" alt="">
+		<img src="#4" alt="">
+		<img src="#5" alt="">
+	</div>
+	<script>
+		var resultimg = document.querySelector('.resultimg'),
+				nav = document.querySelector('.nav');
+
+		resultimg.setAttribute('src', '' + nav.firstElementChild.attributes.src.value);
+		
+		function addSrc(e) {
+			var target = e && e.target || window.event.srcElement;
+			if (target.tagName != 'IMG') return;
+			resultimg.setAttribute('src', '' + target.attributes.src.value);
+		}
+
+		nav.addEventListener('click', addSrc);
+	</script>
+</body>
+</html>

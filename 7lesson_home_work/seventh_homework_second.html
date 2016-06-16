@@ -1,0 +1,48 @@
+<!-- Создайте 5 блоков с текстом. Добавьте в каждый из блоков кнопку для его удаления. Используйте только один обработчик. -->
+<!-- Доработайте пример 004_Attr_Tech.html таким образом, чтобы при наведении на span элементы, подсказка сплыва под ними, а не в модальном окне. Используйте addEventListener -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>seventh homework second</title>
+</head>
+<body>
+	<div class='all'>
+		<div class="div">Lorem ipsum dolor sit amet, consectetur adipisicing elit. In reprehenderit ducimus nostrum tempora laborum, illo quidem nulla suscipit beatae soluta, adipisci. Magnam reprehenderit cupiditate neque repellat? Ut, voluptates. Ducimus, laborum.
+			<button>delet this</button>
+		</div>
+		<div class="div">Tempore quisquam porro laudantium reprehenderit a distinctio repellendus commodi voluptatum ducimus! In quo vel modi itaque, exercitationem, enim? Illo distinctio, sunt ullam et voluptate a corporis assumenda dolorem, sed accusantium!
+			<button>delet this</button>
+		</div>
+		<div class="div">Praesentium sed nihil, dolorem laboriosam aperiam tenetur aliquid quas aspernatur voluptatum optio ipsum aliquam eveniet consequatur ab voluptatem, nobis ea unde! Qui magnam possimus quis? Amet, incidunt vero deserunt iusto.
+			<button>delet this</button>
+		</div>
+		<div class="div">Ipsum laudantium voluptatem soluta sunt asperiores assumenda nisi, omnis laboriosam? Autem quos, et adipisci doloribus iure nobis dicta, facilis, laboriosam repellendus molestiae esse. Sed nisi natus vel tempore! Ratione, quas.
+			<button>delet this</button>
+		</div>
+		<div class="div">Impedit iure iste quisquam quo sequi, aliquid earum eius excepturi architecto, ex aperiam? Facere laborum quae, porro quos eveniet quas cupiditate harum corporis asperiores vel dicta obcaecati. Excepturi, vel dolore.
+			<button>delet this</button>
+		</div>
+	</div>
+	<button class="removeEventListener">removeEventListener</button>
+
+	<script>
+		window.addEventListener('DOMContentLoaded', function() {
+			var all = document.querySelector('.all'),
+					removeListener = document.querySelector('.removeEventListener');
+
+			function deletDiv(e) {
+				var target = e && e.target || e.srcElement;
+				if (target.tagName != 'BUTTON') return;
+				this.removeChild(target.parentNode);
+			}
+			all.addEventListener('click', deletDiv);
+
+			function removeElent() {
+				all.removeEventListener('click', deletDiv);
+			}
+			removeListener.addEventListener('click', removeElent);
+		})
+	</script>
+</body>
+</html>

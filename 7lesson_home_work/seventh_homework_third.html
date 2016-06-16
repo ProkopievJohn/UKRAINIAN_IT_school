@@ -1,0 +1,51 @@
+<!-- Доработайте пример 004_Attr_Tech.html таким образом, чтобы при наведении на span элементы, подсказка сплыва под ними, а не в модальном окне. Используйте addEventListener -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+  	* {
+  		cursor:default;
+  	}
+  	.prompt {
+  		display: none;
+			border: 1px solid black;
+			padding: 1px;
+  	}
+  </style>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+			var mainDiv = document.querySelector("#main-div");
+
+			function help(e) {
+				var target = e && e.target || window.event.srcElement,
+						dataToggleId = target.getAttribute('data-tooltip'),
+						div = document.createElement('div'),
+						nextEl = mainDiv.nextElementSibling;
+
+				if (!dataToggleId) return;
+
+				div.className = 'prompt';
+				div.innerHTML = dataToggleId;
+				div.style.cssText += 'display:block;position: absolute; left:' + (e.pageX + 15) + 'px;';
+
+				if (nextEl) if (nextEl.classList.contains('prompt')) nextEl.parentNode.removeChild(nextEl);
+				mainDiv.insertAdjacentElement('afterEnd', div);
+				
+				this.addEventListener('mouseout', function() {
+					div.style.cssText += 'display:none;';
+				})
+			}
+
+			mainDiv.addEventListener('mousemove', help);
+    })
+</script>
+</head>
+<body>
+  <div id="main-div">
+    <span data-tooltip="наведите">наведите</span> 
+    <span data-tooltip="для">для</span> 
+    <span data-tooltip="подсказки">подсказки</span>
+	</div>
+</body>
+</html>

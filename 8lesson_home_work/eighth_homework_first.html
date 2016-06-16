@@ -1,0 +1,114 @@
+<!-- back to top button; -->
+<!-- drag - создать квадрать размером 50х50 и сделать возможность перетаскивать его по документу; -->
+<!-- создайте div, при клике на него, div начинает двигаться вправо, при клике на кнопку - останавливается, при попадании div к краю окна, он переходит к началу окна. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>eighth homework first</title>
+	<style>
+	* {
+		margin: 0;
+	}
+		.back_to_top {
+			z-index: 100500;
+			text-align: center;
+			width: 100px;
+			background-color: #ccc;
+			line-height: 100px;
+			position: fixed;
+			right: 15px;
+			bottom: 15px;
+			cursor: default;
+		}
+		.back_to_top:hover {
+			background-color: #bbb;
+		}
+		.drag {
+			z-index: 100600;
+			cursor: default;
+			width: 50px;
+			height: 50px;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			background-color: lightseagreen;
+		}
+		.go {
+			width: 150px;
+			height: 150px;
+			background-color: #ccc;
+		}
+	</style>
+</head>
+<body>
+	<div class="back_to_top">back to top</div>
+	<div class="drag"></div>
+	<div class="go"></div>
+	<button class="stop_go">stop go</button>
+	(p>lorem200)*15
+
+	<script>
+		window.addEventListener('DOMContentLoaded', function() {
+			var backToTop = document.querySelector('.back_to_top'),
+					drag = document.querySelector('.drag'),
+					go = document.querySelector('.go'),
+					stopGo = document.querySelector('.stop_go'),
+					i = 0,
+					timeOut;
+
+			function toTop() {
+				window.scrollTo(0,0);
+			}
+
+			function mouseDown(e) {
+				var difX = drag.offsetLeft - e.pageX,
+						difY = drag.offsetTop - e.pageY;
+				window.addEventListener('mousemove', mouseMove);
+				window.addEventListener('mouseup', mouseUp);
+				
+				function mouseMove(e) {
+					drag.style.cssText += 'left:' + (e.pageX + difX) + 'px;top:' + (e.pageY + difY) + 'px;';
+				}
+	
+				function mouseUp(e) {
+					this.removeEventListener('mousemove', mouseMove)
+				}
+			}
+
+			function goRight(e) {
+				timeOut = setTimeout(function() {
+					i++;
+					var w = document.documentElement.clientWidth - go.clientWidth;
+					if (w == getComputedTranslateX(go)) i = 0;
+					go.style.cssText += 
+					'-moz-transform: translateX(' +			i + 'px);' +
+					'-ms-transform: translateX(' + 			i + 'px);' +
+					'-webkit-transform: translateX(' + 	i + 'px);' +
+					'-o-transform: translateX('+ 				i + 'px);' +
+					'transform: translateX('+ 					i + 'px);';
+					goRight();
+				}, 1);
+			}
+
+			function stopGoRight() {
+				clearTimeout(timeOut);
+			}
+
+			function getComputedTranslateX(obj) {
+				if(!window.getComputedStyle) return;
+				var getTransform = getComputedStyle(obj).transform,
+						mat = getTransform.match(/^matrix3d\((.+)\)$/);
+				if (mat) return parseInt(mat[1].split(', ')[12]);
+						mat = getTransform.match(/^matrix\((.+)\)$/);
+				return mat ? parseInt(mat[1].split(', ')[4]) : 0;
+			}
+
+			backToTop.addEventListener('click', toTop);
+			drag.addEventListener('mousedown', mouseDown)
+			go.addEventListener('click', goRight);
+			stopGo.addEventListener('click', stopGoRight);
+		})
+	</script>
+</body>
+</html>

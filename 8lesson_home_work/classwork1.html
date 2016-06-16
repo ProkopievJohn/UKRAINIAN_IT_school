@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>class work 1</title>
+	<style>
+		
+	</style>
+</head>
+<body>
+	<ul>
+		<li>some el 1</li>
+		<li>some el 2</li>
+		<li>some el 3</li>
+		<li>some el 4</li>
+		<li>some el 5</li>
+	</ul>
+	<div class="nav">
+		<button class="prev">prev</button>
+		<button class="next">next</button>
+	</div>
+	<script>
+		window.addEventListener('DOMContentLoaded', function() {
+			var ul = document.querySelector('ul'),
+					nav = document.querySelector('.nav');
+
+			function cloneNext() {
+				var cln = ul.firstElementChild.cloneNode(true);
+				ul.insertAdjacentElement('beforeEnd', cln);
+				ul.firstElementChild.parentNode.removeChild(ul.firstElementChild);
+			}
+
+			function clonePrev() {
+				var cln = ul.lastElementChild.cloneNode(true);
+				ul.insertAdjacentElement('afterBegin', cln);
+				ul.lastElementChild.parentNode.removeChild(ul.lastElementChild);
+			}
+
+			function play(e) {
+				var target = e && e.target || window.event.srcElement;
+				if (target.classList.contains('next')) cloneNext();
+				if (target.classList.contains('prev')) clonePrev();
+			}
+
+			nav.addEventListener('click', play)
+		})
+	</script>
+</body>
+</html>
