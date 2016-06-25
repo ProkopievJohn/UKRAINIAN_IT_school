@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>create slide touch</title>
+	<style>
+		.result img {
+			display: block;
+			width: 200px;
+			height: 200px;
+		}
+		.nav {
+			overflow: hidden;
+		}
+		.nav img {
+			display: block;
+			width: 50px;
+			height: 50px;
+			float: left;
+		}
+		.nav::after {
+			content:'';
+			display: table;
+			clear: both;
+		}
+	</style>
+</head>
+<body>
+	<div class="slider">
+		<div class="result"><img src="" alt=""></div>
+		<div class="nav">
+			<img src="#it1" alt="">
+			<img src="#it2" alt="">
+			<img src="#it3" alt="">
+			<img src="#it4" alt="">
+			<img src="#it5" alt="">
+			<img src="#it6" alt="">
+		</div>
+		<button class="prev">prev</button>
+		<button class="next">next</button>
+	</div>
+<!-- viewport -->
+	<script>
+		window.addEventListener('DOMContentLoaded', function() {
+			var result = document.querySelector('.result').querySelector('img'),
+					slider = document.querySelector('.slider'),
+					imgs = document.querySelectorAll('img'),
+					nav = document.querySelector('.nav'),
+					navimgs = nav.querySelectorAll('img'),
+					len = 4,
+					k;
+
+			result.setAttribute('src', navimgs[0].attributes.src.value);
+			nav.style.cssText = 'width:' + (navimgs[0].offsetWidth * len) + 'px;height:' + navimgs[0].offsetHeight + 'px;';
+
+			function addAlt() {
+				for (var i = 0; i < imgs.length; i++) {
+					imgs[i].setAttribute('alt', imgs[i].attributes.src.value);
+				}
+			}
+			
+
+			function addViewport() {
+				navimgs = nav.querySelectorAll('img')
+				for (var i = 0; i < navimgs.length; i++) {
+					if (i < len) {
+						navimgs[i].classList.add('viewport');
+					} else {
+						navimgs[i].classList.remove('viewport');
+					}
+				}
+				addAlt();
+			}
+			addViewport();
+
+			function cloneNext() {
+				var cln = nav.firstElementChild.cloneNode(true);
+				nav.insertAdjacentElement('beforeEnd', cln);
+				nav.firstElementChild.parentNode.removeChild(nav.firstElementChild);
+				addViewport();
+			}
+
+			function clonePrev() {
+				var cln = nav.lastElementChild.cloneNode(true);
+				nav.insertAdjacentElement('afterBegin', cln);
+				nav.lastElementChild.parentNode.removeChild(nav.lastElementChild);
+				addViewport();
+			}
+
+			function next() {
+				for (var i = 0; i < navimgs.length; i++) {
+					if (navimgs[i].attributes.src.value == result.attributes.src.value) k = i;
+				}
+				if (!navimgs[k+1].classList.contains('viewport')) {
+					cloneNext();
+					result.setAttribute('src', navimgs[k].attributes.src.value);
+				} else {
+					result.setAttribute('src', navimgs[k+1].attributes.src.value);
+				}
+				addAlt();
+			}
+
+			function prev() {
+				for (var i = 0; i < navimgs.length; i++) {
+					if (navimgs[i].attributes.src.value == result.attributes.src.value) k = i;
+				}
+				if (k == 0) {
+					clonePrev();
+					result.setAttribute('src', navimgs[k].attributes.src.value);
+				} else {
+					result.setAttribute('src', navimgs[k-1].attributes.src.value);
+				}
+				addAlt();
+			}
+
+			function addSrc(e) {
+				var target = e && e.target || window.event.srcElement;
+				if (target.classList.contains('next')) next();
+				if (target.classList.contains('prev')) prev();
+				if ((target.tagName == 'IMG') && (target.parentNode.classList.contains('nav'))) {
+					result.setAttribute('src', target.attributes.src.value);
+					addAlt();
+				}
+			}
+
+			slider.addEventListener('click', addSrc);
+		})
+	</script>
+</body>
+</html>

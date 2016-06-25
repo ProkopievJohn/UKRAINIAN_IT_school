@@ -27,14 +27,21 @@
 	</div>
 	<script>
 		var resultimg = document.querySelector('.resultimg'),
-				nav = document.querySelector('.nav');
+				nav = document.querySelector('.nav'),
+				imgs = document.querySelectorAll('img');
 
 		resultimg.setAttribute('src', '' + nav.firstElementChild.attributes.src.value);
-		
+		function addAlt() {
+			for (var i = 0; i < imgs.length; i++) {
+				imgs[i].setAttribute('alt', imgs[i].attributes.src.value);
+			}
+		}
+		addAlt();
 		function addSrc(e) {
 			var target = e && e.target || window.event.srcElement;
 			if (target.tagName != 'IMG') return;
-			resultimg.setAttribute('src', '' + target.attributes.src.value);
+			resultimg.setAttribute('src', target.attributes.src.value);
+			addAlt();
 		}
 
 		nav.addEventListener('click', addSrc);
