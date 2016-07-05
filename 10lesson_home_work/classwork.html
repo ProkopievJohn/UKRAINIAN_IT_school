@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>10 lesson classwork</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		.slider {
+			width: 100%;
+			height: 100vh;
+			overflow: hidden;
+			position: relative;
+			font-family: 'Open Sans', sans-serif;
+		}
+		.result {
+			width: 100%;
+			height: 100vh;
+			background-position: center center;
+			background-size: cover;
+			background-repeat: no-repeat;
+			z-index:1;
+		}
+		.nav {
+			overflow: hidden;
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			transform:translateX(-50%);
+			background-color: #ccc;
+			border-radius:5px;
+			opacity: 0.8;
+			z-index:10;
+		}
+		.nav img {
+			display: block;
+			width: 100px;
+			height: 100px;
+			padding: 5px;
+			float: left;
+		}
+		.next, .prev {
+			border-radius: 5px;
+			background-color: hsla(0, 0%, 80%, 0.4);
+			position: absolute;
+			bottom: 0;
+			z-index: 10;
+			text-align: center;
+			cursor: pointer;
+		}
+		.next {
+			right: 0;
+		}
+		.prev {
+			left: 0;
+		}
+		.scrol {
+			position: absolute;
+			left: 50%;
+			transform:translateX(-50%);
+			background-color: hsla(0, 0%, 80%, 0.4);
+		}
+	</style>
+</head>
+<body>
+	<div class="slider">
+		<div class="result"></div>
+		<div class="scrol">wheel</div>
+		<div class="nav">
+			<img src="img/1.jpg" alt="">
+			<img src="img/2.jpg" alt="">
+			<img src="img/3.jpg" alt="">
+			<img src="img/4.jpg" alt="">
+			<img src="img/5.jpg" alt="">
+			<img src="img/6.jpg" alt="">
+			<img src="img/7.jpg" alt="">
+			<img src="img/8.jpg" alt="">
+			<img src="img/9.jpg" alt="">
+			<img src="img/10.jpg" alt="">
+		</div>
+		<div class="prev">prev</div>
+		<div class="next">next</div>
+	</div>
+	<script>
+		window.addEventListener('DOMContentLoaded', function(){
+			// polyfill insertAdjacent*** for Firefox
+			if (typeof HTMLElement != "undefined" && !HTMLElement.prototype.insertAdjacentElement) {
+			  HTMLElement.prototype.insertAdjacentElement = function(where, parsedNode) {
+			    switch(where) {
+			    case 'beforeBegin':
+			      this.parentNode.insertBefore(parsedNode, this)
+			      break;
+			    case 'afterBegin':
+			      this.insertBefore(parsedNode, this.firstChild);
+			      break;
+			    case 'beforeEnd':
+			      this.appendChild(parsedNode);
+			      break;
+			    case 'afterEnd':
+			      if(this.nextSibling) this.parentNode.insertBefore(parsedNode, this.nextSibling);
+			      else this.parentNode.appendChild(parsedNode);
+			      break;
+			    }
+			  }
+			  HTMLElement.prototype.insertAdjacentHTML = function(where, htmlStr) {
+			    var r = this.ownerDocument.createRange();
+			    r.setStartBefore(this);
+			    var parsedHTML = r.createContextualFragment(htmlStr);
+			    this.insertAdjacentElement(where, parsedHTML)
+			  }
+			  HTMLElement.prototype.insertAdjacentText = function(where, txtStr) {
+			    var parsedText = document.createTextNode(txtStr)
+			    this.insertAdjacentElement(where, parsedText)
+			  }
+			}
+
+			// create class
+			function Slider(el){
+				this.el = document.querySelector(el);
+				this.nav = this.el.querySelector('.nav');
+				this.result = this.el.querySelector('.result');
+				this.addEL();
+				this.status = true;
+				this.lengnav = 5;
+				this.addViewport();
+				this.nextPrevPosition();
+			}
+			// add prototype method
+			Slider.prototype.addEL = function(){
+				if (this.nav.addEventListener) {
+					if ('onwheel' in document) {
+						this.nav.addEventListener("wheel", this.onWheel.bind(this));
+					} else if ('onmousewheel' in document) {
+						this.nav.addEventListener("mousewheel", this.onWheel.bind(this));
+					} else {
+						this.nav.addEventListener("MozMousePixelScroll", this.onWheel.bind(this));
+					}
+				} else {
+					this.nav.attachEvent("onmousewheel", this.onWheel.bind(this));
+				}
+				this.nav.addEventListener('click', this.addSrc.bind(this));
+				this.el.querySelector('.next').addEventListener('click', this.cloneNext.bind(this));
+				this.el.querySelector('.prev').addEventListener('click', this.clonePrev.bind(this));
+			}
+			Slider.prototype.cloneNext = function() {
+				var cln = this.nav.firstElementChild.cloneNode(true);
+				this.nav.insertAdjacentElement('beforeEnd', cln);
+				this.nav.firstElementChild.parentNode.removeChild(this.nav.firstElementChild);
+				this.addViewport();
+			}
+			Slider.prototype.clonePrev = function() {
+				var cln = this.nav.lastElementChild.cloneNode(true);
+				this.nav.insertAdjacentElement('afterbegin', cln);
+				this.nav.lastElementChild.parentNode.removeChild(this.nav.lastElementChild);
+				this.addViewport();
+			}
+			Slider.prototype.addViewport = function() {
+				for (var i = 0; i < this.nav.children.length; i++) {
+					if (i < this.lengnav) {
+						this.nav.children[i].classList.add('viewport');
+					} else {
+						this.nav.children[i].classList.remove('viewport');
+					}
+				}
+			}
+			Slider.prototype.addSrc = function(e) {
+				var target = e && e.target || window.event.srcElement;
+				if ((target.tagName == 'IMG') && (target.parentNode.classList.contains('nav'))) {
+					this.result.style.cssText = 'background-image: url(' + target.attributes.src.value + ');';
+				}
+			}
+			Slider.prototype.nextPrevPosition = function() {
+				var next = this.el.querySelector('.next');
+				var prev = this.el.querySelector('.prev');
+				var scrol = this.el.querySelector('.scrol');
+				next.style.cssText = 'width:' + (this.nav.firstElementChild.offsetWidth / 2) + 'px;line-height:' + this.nav.firstElementChild.offsetHeight + 'px;';
+				prev.style.cssText = 'width:' + (this.nav.firstElementChild.offsetWidth / 2) + 'px;line-height:' + this.nav.firstElementChild.offsetHeight + 'px;';
+				scrol.style.cssText = 'bottom:' + this.nav.firstElementChild.offsetWidth + 'px;';
+				this.result.style.cssText = 'background-image: url(' + this.nav.firstElementChild.attributes.src.value + ');';
+				this.nav.style.cssText = 'width:' + (this.nav.firstElementChild.offsetWidth * this.lengnav) + 'px;height:' + this.nav.firstElementChild.offsetHeight + 'px;';
+			}
+			Slider.prototype.onWheel = function(e = window.event) {
+				if (this.status != true) return;
+				this.status = false;
+				var delta = e.deltaY || e.detail || e.wheelDelta;
+				if (delta>0) {
+					this.cloneNext();
+				} else {
+					this.clonePrev();
+				}
+				setTimeout(() => {
+					this.status = true;
+				}, 100);
+			}
+			new Slider('.slider');
+		});
+	</script>
+</body>
+</html>
