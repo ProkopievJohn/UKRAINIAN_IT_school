@@ -1,0 +1,57 @@
+<!-- 
+    1.) Реализуйте hover изображений с помощью Javascript.
+    2.) Добавьте второй изображение при помощи JavaScript. При клике на изображение откройте его в полном размере.
+    3.) Выведите в рамзетку альтернативный текст для картинок.
+ -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.img {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			background-color: #ccc;
+			transform:translate(-50%,-50%);
+			width: 10%;
+		}
+		img {
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="img">
+		<img src="javascript_logo.png" alt="JavaScript Logo">
+	</div>
+	<script>
+		'use strict';
+		window.addEventListener('DOMContentLoaded', function(){
+			var divimg = document.querySelector('.img');
+			divimg.addEventListener('mouseover', function(){
+				this.style.backgroundColor = 'transparent';
+			});
+			divimg.addEventListener('mouseout', function(){
+				this.style.backgroundColor = '#ccc';
+			});
+			var newimg = new Image();
+			newimg.src = 'javascript_everywhere.jpg';
+			divimg.appendChild(newimg);
+			divimg.addEventListener('click', function(event){
+				var target = event && event.target || window.event.srcElement;
+				if (target.tagName == 'IMG') {
+					window.open(target.src,'_blank');
+				}
+			});
+			var imgs = document.querySelectorAll('img');
+			for (var i = 0; i < imgs.length; i++) {
+				var p = document.createElement('p');
+				p.innerHTML = imgs[i].getAttribute('alt');
+				imgs[i].insertAdjacentElement('afterEnd', p);
+			}
+		});
+	</script>
+</body>
+</html>
