@@ -3,9 +3,9 @@ function App() {
 }
 App.prototype = Object.create(Helper.prototype);
 App.prototype.init = function(){
-	this.getDate('2016-07-16 10:11:12', 'ru');
-}
-
+	new Iframe(document.querySelector('.val-iframe-streams'));
+	new Slider(document.querySelector('.val-slider-general-news'));
+};
 window.addEventListener('DOMContentLoaded', function(){
 	new App();
 })
