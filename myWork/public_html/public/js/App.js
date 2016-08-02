@@ -10,7 +10,9 @@ App.prototype.init = function(){
 	new Weather(document.querySelector('.outer-for-weather'));
 	new Currency(document.querySelector('.-currency-val'));
 	new Category(document.querySelector('.val-full-width-category'));
-	// new Category();
+	new CategorySingle(document.querySelector('#val-single-category'), document.querySelector('#val-count-and-id'));
+	new Modal(document.querySelector('.val-header'));
+	new Menu(document.querySelector('.val-button-menu'));
 };
 
 window.addEventListener('DOMContentLoaded', function(){

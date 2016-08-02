@@ -19,8 +19,8 @@ Currency.prototype.currencyJSONPars = function (response, self) {
 	'use strict';
 	var jPars = JSON.parse(response);
 	// for (var i = 0; i < jPars.length; i++) {
-	// 	if (self.currencyBanksUrl.indexOf(jPars[i]) != -1) {
-			// self.currencyCreateObj(jPars[j], self);
+	// 	if (self.currencyBanksUrl.indexOf(jPars[i]) !== -1) {
+	// 		self.currencyCreateObj(jPars[i], self);
 	// 	}
 	// }
 	for (var i = 0; i < self.currencyBanksUrl.length; i++) {

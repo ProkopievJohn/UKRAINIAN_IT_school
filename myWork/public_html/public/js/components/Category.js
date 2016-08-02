@@ -21,7 +21,7 @@ Category.prototype.categoryWinEL = function () {
 	if (width < 1000) {
 		this.categoryStatus = false;
 		this.categoryNumber = this.categoryNumber === 6 ? this.categoryNumber + 2 : this.categoryNumber + 1;
-		if (this.categoryNumber === 9) this.categoryStatus = false;
+		if (this.categoryNumber > 9) return;
 		this.categoryXML(this.categoryNumber);
 	}
 };
@@ -36,12 +36,11 @@ Category.prototype.categoryJSONPars = function(response, self) {
 	'use strict';
 	var jPars = JSON.parse(response);
 	var parscategory = JSON.parse(jPars.category);
-	console.log(parscategory);
 	var parsnews = JSON.parse(jPars.news);
-	self.currencyCreateElement(parsnews, jPars, parscategory, self);
+	self.currencyCreateElement(parsnews, parscategory, jPars.language, self);
 };
 
-Category.prototype.currencyCreateElement = function(parsnews, jPars, parscategory, self) {
+Category.prototype.currencyCreateElement = function(parsnews, parscategory, lang, self) {
 	'use strict';
 	var instrin = '',
 			strin = '';
@@ -52,24 +51,24 @@ Category.prototype.currencyCreateElement = function(parsnews, jPars, parscategor
 											'<img src="/uploads/news/thumb/' + parsnews[i].image + '" alt=" + arrays[title_ + lang] + ">' +
 										'</div>' +
 										'<div class="val-line-vews-data">' +
-											'<span class="val-content-news-data">' + self.getDate(parsnews[i].date, jPars.language) + '</span>' +
+											'<span class="val-content-news-data">' + self.getDate(parsnews[i].date, lang) + '</span>' +
 											'<span class="val-news-view">' + parsnews[i].views + '</span>' +
 										'</div>' +
-										'<h2 class="val-title-news-category">' + parsnews[i].title_uk + '</h2>' +
+										'<h2 class="val-title-news-category">' + parsnews[i]['title_' + lang] + '</h2>' +
 									'</a>';
 		} else {
 			instrin += '<a href="/site/news/' + parsnews[i].id + '" class="val-news-item-category val-category-image">' +
 										'<div class="val-line-vews-data">' +
-											'<span class="val-content-news-data">' + self.getDate(parsnews[i].date, jPars.language) + '</span>' +
+											'<span class="val-content-news-data">' + self.getDate(parsnews[i].date, lang) + '</span>' +
 											'<span class="val-news-view">' + parsnews[i].views + '</span>' +
 										'</div>' +
-										'<h2 class="val-title-news-category">' + parsnews[i].title_uk + '</h2>' +
-										'<p class="val-description-news-category">' + parsnews[i].description_uk.substring(0, 250) + '</p>' +
+										'<h2 class="val-title-news-category">' + parsnews[i]['title_' + lang] + '</h2>' +
+										'<p class="val-description-news-category">' + parsnews[i]['description_' + lang].substring(0, 250) + '</p>' +
 									'</a>';
 		}
 	}
 	var strin = '<div class="val-category-block">' +
-								'<h2 class="val-title-uppercase-with-line">' + parscategory[0].name_uk + '</h2>' +
+								'<h2 class="val-title-uppercase-with-line">' + parscategory[0]['name_' + lang] + '</h2>' +
 								'<div class="val-news-list-category">' +
 									instrin +
 								'</div>' +
