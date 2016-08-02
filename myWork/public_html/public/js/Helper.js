@@ -53,8 +53,9 @@ Helper.prototype.searchInArray = function (obj, key, callback, self) {
 
 Helper.prototype.fade = function (el, time, up) {
 	'use strict';
-	el.style.cssText += up === 'up' ? 'opacity:1;' : 'opacity:0;';
-	setTimeout(function () {el.style.cssText += up === 'up' ? 'display:block;' : 'display:none;';}, time);
+	var time = up === 'up' ? 0 : time;
+	el.style.cssText += up === 'up' ? 'display: block;' : 'opacity: 0;';
+	setTimeout(function () {el.style.cssText += up === 'up' ? ' opacity: 1;' : 'display:none;';}, time);
 };
 
 Helper.prototype.mounthObject = {

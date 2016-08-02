@@ -58,7 +58,18 @@
             <header class="val-header">
                 <div class="val-top-line">
                     <div class="val-outer-left-button">
-                        <div class="val-button-menu"><span>Меню</span></div>
+                        <div class="val-button-menu">
+                            <span class="val-main-menu">Меню</span>
+                            <nav class="val-menu-block">
+                            	<ul>
+                                    <li><a href="#">list 1</a></li>
+                                    <li><a href="#">list 2</a></li>
+                                    <li><a href="#">list 3</a></li>
+                                    <li><a href="#">list 4</a></li>
+                            		<li><a href="#">list 5</a></li>
+                            	</ul>
+                            </nav>
+                        </div>
                         <div class="val-button-search">
                             <span>Поиск</span>
                             <div class="val-search-modal">
